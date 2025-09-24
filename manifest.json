@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "n8n Workflow Explorer",
+  "version": "1.0.0",
+  "description": "A comprehensive Chrome extension for managing n8n workflows with advanced features including tag-based organization, dark mode, and customizable folder colors.",
+  "author": "Ibrahim Sanduvaç",
+  "homepage_url": "https://github.com/sundowatch/n8n-workflow-explorer",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "n8n Workflow Explorer - Organize your workflows with tags, colors, and themes",
+    "default_icon": {
+      "16": "icon.png",
+      "32": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "short_name": "n8n Explorer",
+  "minimum_chrome_version": "88"
+}

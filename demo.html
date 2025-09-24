@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Workflow Explorer - Chrome Extension</title>
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><img src="icon.png" style="width: 48px; height: 48px; vertical-align: middle; margin-right: 16px;">n8n Workflow Explorer</h1>
+            <p>A powerful Chrome extension that organizes your n8n workflows into folders based on tags, with intelligent hierarchical structure based on creation dates.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🏷️</div>
+                <h3>Tag-based Organization</h3>
+                <p>Automatically organizes workflows into folders based on their tags, creating a clean and structured view of your automation.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">📁</div>
+                <h3>Hierarchical Folders</h3>
+                <p>Multiple tags create nested folders based on creation dates - older tags become parent folders, newer ones become subfolders.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🚀</div>
+                <h3>Quick Access</h3>
+                <p>Click on any workflow to open it directly in your n8n instance. Streamline your workflow management process.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">💾</div>
+                <h3>Local Caching</h3>
+                <p>Stores workflows locally for offline viewing and faster loading. Your data stays on your machine.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <h3>Real-time Sync</h3>
+                <p>Manual refresh button keeps your workflows up-to-date with your n8n instance whenever you need it.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3>Clean Interface</h3>
+                <p>Modern, intuitive design with status indicators, folder icons, and smooth animations for the best user experience.</p>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2>Ready to organize your n8n workflows?</h2>
+            <p>Get started with the n8n Workflow Explorer Chrome Extension today!</p>
+            <a href="#" class="download-btn" onclick="downloadExtension()">📥 Download Extension</a>
+        </div>
+
+        <div class="installation">
+            <h2>Installation Guide</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Download the Extension</h4>
+                    <p>Download the extension files and extract them to a folder on your computer.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Open Chrome Extensions</h4>
+                    <p>Navigate to <span class="code">chrome://extensions/</span> in your Chrome browser.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Enable Developer Mode</h4>
+                    <p>Toggle on "Developer mode" in the top right corner of the extensions page.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Load the Extension</h4>
+                    <p>Click "Load unpacked" and select the folder containing the extension files.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Configure & Enjoy</h4>
+                    <p>Click the extension icon, enter your n8n API URL and key, then start organizing your workflows!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="installation">
+            <h2>How It Works</h2>
+            <p style="margin-bottom: 30px; color: #7f8c8d; font-size: 1.1em;">The extension intelligently organizes your workflows based on tags:</p>
+            
+            <div style="background: #f8f9fa; padding: 30px; border-radius: 8px; margin: 20px 0;">
+                <h4 style="color: #2c3e50; margin-bottom: 15px;">Example Organization:</h4>
+                <div style="font-family: monospace; color: #2c3e50; line-height: 1.8;">
+                    📁 Production (created 2023-01-01)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;📁 API (created 2023-01-15)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📄 User Registration Workflow<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;📁 Email (created 2023-01-20)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📄 Welcome Email Sequence<br>
+                    📁 Development (created 2023-01-05)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;📄 Test Automation Workflow<br>
+                    📁 Untagged Workflows<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;📄 Quick Test Workflow
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 n8n Workflow Explorer Chrome Extension. Built with ❤️ for the n8n community.</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadExtension() {
+            // In a real scenario, this would trigger a download
+            alert('Extension files are ready for download! Check the repository for the latest version.');
+        }
+    </script>
+</body>
+</html>

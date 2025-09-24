@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <style>
+    body {
+      width: 400px;
+      min-height: 500px;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header h1 img {
+      /* filter: brightness(0) invert(1); */
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .setup-form {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      width: 100%;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background: #5a6fd8;
+    }
+
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn img, .refresh-btn img {
+      opacity: 0.9;
+    }
+
+    .btn:hover img, .refresh-btn:hover img {
+      opacity: 1;
+    }
+
+    .workflows-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .folder {
+      border-bottom: 1px solid #eee;
+    }
+
+    .folder-header {
+      padding: 15px 20px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .folder-header[style*="cursor: pointer"] {
+      cursor: pointer;
+    }
+
+    .folder-header:hover {
+      background: #e9ecef;
+    }
+    
+    .folder-header[style*="cursor: pointer"]:hover {
+      background: #e9ecef;
+    }
+    
+    .folder-header[style*="cursor: pointer"]:active {
+      background: #dee2e6;
+    }
+
+    .folder-header:focus {
+      outline: 2px solid #667eea;
+      outline-offset: -2px;
+    }
+
+    .folder-icon {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .folder-content {
+      display: none;
+      background: white;
+      overflow: hidden;
+    }
+
+    .folder.open > .folder-content {
+      display: block;
+    }
+
+    .folder-content .folder {
+      display: block;
+    }
+
+    .folder-header {
+      user-select: none;
+    }
+
+    .folder.open .folder-toggle {
+      color: #495057;
+    }
+
+    .folder-toggle {
+      transition: all 0.2s ease;
+      font-size: 17px;
+      margin-right: 8px;
+      user-select: none;
+      color: #707070;
+    }
+
+    .workflow-item {
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .workflow-item:hover {
+      background: #f8f9fa;
+    }
+
+    .workflow-item:last-child {
+      border-bottom: none;
+    }
+
+    .workflow-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .workflow-info {
+      flex: 1;
+    }
+
+    .workflow-name {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 2px;
+    }
+
+    .workflow-meta {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      border: 1px solid #fcc;
+    }
+
+    .success {
+      background: #efe;
+      color: #3c3;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      border: 1px solid #cfc;
+    }
+
+    .workflow-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+
+    .workflow-status.active {
+      background: #28a745;
+    }
+
+    .workflow-status.inactive {
+      background: #6c757d;
+    }
+
+    .refresh-btn {
+      background: transparent;
+      border: 1px solid #667eea;
+      color: #667eea;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      flex: 1;
+    }
+
+    .refresh-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    /* Folder Color Themes - Only direct child folder icons */
+    .folder-color-default > .folder-header > div > .folder-icon { color: #6c757d; }
+    .folder-color-primary > .folder-header > div > .folder-icon { color: #0d6efd; }
+    .folder-color-success > .folder-header > div > .folder-icon { color: #198754; }
+    .folder-color-info > .folder-header > div > .folder-icon { color: #0dcaf0; }
+    .folder-color-warning > .folder-header > div > .folder-icon { color: #ffc107; }
+    .folder-color-danger > .folder-header > div > .folder-icon { color: #dc3545; }
+    .folder-color-purple > .folder-header > div > .folder-icon { color: #6f42c1; }
+    .folder-color-pink > .folder-header > div > .folder-icon { color: #d63384; }
+    .folder-color-orange > .folder-header > div > .folder-icon { color: #fd7e14; }
+    .folder-color-teal > .folder-header > div > .folder-icon { color: #20c997; }
+
+    /* Folder Color Context Menu */
+    .folder-color-menu {
+      position: absolute;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      padding: 12px;
+      display: none;
+      z-index: 1000;
+      min-width: 180px;
+    }
+
+    .folder-color-menu.show {
+      display: block;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .color-option {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+
+    .color-option.selected {
+      border-color: #333;
+      box-shadow: 0 0 0 2px rgba(51, 51, 51, 0.3);
+    }
+
+    .color-option.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      text-shadow: 0 0 2px rgba(0,0,0,0.5);
+    }
+
+    .color-option-default { background: #6c757d; }
+    .color-option-primary { background: #0d6efd; }
+    .color-option-success { background: #198754; }
+    .color-option-info { background: #0dcaf0; }
+    .color-option-warning { background: #ffc107; }
+    .color-option-danger { background: #dc3545; }
+    .color-option-purple { background: #6f42c1; }
+    .color-option-pink { background: #d63384; }
+    .color-option-orange { background: #fd7e14; }
+    .color-option-teal { background: #20c997; }
+
+    .folder-header .folder-icon {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .folder-header .folder-icon:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Bootstrap Switch Styles */
+    .form-check {
+      display: block;
+      min-height: 1.5rem;
+      padding-left: 0;
+      margin-bottom: 0.125rem;
+    }
+
+    .form-check-input {
+      width: 2.5rem;
+      height: 1.25rem;
+      margin-top: 0;
+      margin-left: 0;
+      border-radius: 0.625rem;
+      background-color: #dee2e6;
+      background-image: none;
+      border: 1px solid #adb5bd;
+      appearance: none;
+      print-color-adjust: exact;
+      cursor: pointer;
+      transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-check-input:focus {
+      border-color: #86b7fe;
+      outline: 0;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .form-check-input:checked {
+      background-color: #667eea;
+      border-color: #667eea;
+      background-image: none;
+    }
+
+    .form-check-input:checked:focus {
+      border-color: #5a6fd8;
+      box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+    }
+
+    .form-switch .form-check-input {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%2833,37,41,0.25%29'/%3e%3c/svg%3e");
+      background-position: left center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      border-radius: 2rem;
+    }
+
+    .form-switch .form-check-input:checked {
+      background-position: right center;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background-color: #293343;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .header {
+      background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    }
+
+    body.dark-mode .setup-form {
+      background: #2d3748;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    body.dark-mode .workflows-container {
+      background: #2d3748;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    body.dark-mode .folder {
+      border-bottom-color: #4a5568;
+    }
+
+    body.dark-mode .folder-toggle {
+      color: #a0a0a0 !important;
+    }
+
+    body.dark-mode .folder-header {
+      background: #353e4e;
+      color: #e0e0e0;
+      border-bottom: 1px solid #4a5568;
+    }
+
+    body.dark-mode .folder-header:hover {
+      background: #5a6b7d;
+    }
+
+    body.dark-mode .folder-header[style*="cursor: pointer"]:hover {
+      background: #5a6b7d;
+    }
+
+    body.dark-mode .folder-header[style*="cursor: pointer"]:active {
+      background: #6b7c93;
+    }
+
+    body.dark-mode .folder-content {
+      background: #2d3748;
+    }
+
+    body.dark-mode .workflow-item {
+      border-bottom-color: #4a5568;
+    }
+
+    body.dark-mode .workflow-item:hover {
+      background: #4a5568;
+    }
+
+    body.dark-mode .workflow-name {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .workflow-meta {
+      color: #a0a0a0;
+    }
+
+    body.dark-mode input[type="text"], 
+    body.dark-mode input[type="password"] {
+      background: #4a5568;
+      border-color: #6b7c93;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode input[type="text"]:focus, 
+    body.dark-mode input[type="password"]:focus {
+      border-color: #667eea;
+      background: #5a6b7d;
+    }
+
+    body.dark-mode input[type="text"]::placeholder,
+    body.dark-mode input[type="password"]::placeholder {
+      color: #a0a0a0;
+    }
+
+    body.dark-mode label {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .btn {
+      background: #667eea;
+      color: white;
+    }
+
+    body.dark-mode .btn:hover {
+      background: #5a6fd8;
+    }
+
+    body.dark-mode .refresh-btn {
+      border-color: #4a5568;
+      color: #667eea;
+      background: transparent;
+    }
+
+    body.dark-mode .refresh-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    body.dark-mode .error {
+      background: #4a1e1e;
+      color: #ff6b6b;
+      border-color: #8b2c2c;
+    }
+
+    body.dark-mode .success {
+      background: #1e4a1e;
+      color: #51cf66;
+      border-color: #2c8b2c;
+    }
+
+    body.dark-mode .loading {
+      color: #a0a0a0;
+    }
+
+    body.dark-mode .folder-color-menu {
+      background: #4a5568;
+      border-color: #6b7c93;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    body.dark-mode .color-option.selected {
+      border-color: #e0e0e0;
+      box-shadow: 0 0 0 2px rgba(224, 224, 224, 0.3);
+    }
+
+    body.dark-mode h3 {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode p {
+      color: #a0a0a0;
+    }
+
+    body.dark-mode .form-check-input {
+      background-color: #4a5568;
+      border-color: #6b7c93;
+    }
+
+    body.dark-mode .form-check-input:checked {
+      background-color: #667eea;
+      border-color: #667eea;
+    }
+
+    /* Light Mode Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    /* Dark Mode Scrollbar */
+    body.dark-mode ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-track {
+      background: #2d3748;
+      border-radius: 4px;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb {
+      background: #4a5568;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb:hover {
+      background: #5a6b7d;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-corner {
+      background: #2d3748;
+    }
+
+    /* Firefox Scrollbar Support */
+    body {
+      scrollbar-width: thin;
+      scrollbar-color: #c1c1c1 #f1f1f1;
+    }
+
+    body.dark-mode {
+      scrollbar-width: thin;
+      scrollbar-color: #4a5568 #2d3748;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1><img src="icon.png" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px; border-radius:50%;">n8n Workflow Explorer</h1>
+  </div>
+
+  <div class="content">
+    <div id="setup-section" class="setup-form">
+      <h3 style="margin-top: 0;">Setup Required</h3>
+      <p style="color: #666; margin-bottom: 20px;">Configure your n8n connection to get started.</p>
+      <button class="btn" id="open-config"><i class="bi bi-gear"></i> Configure Connection</button>
+    </div>
+
+    <div id="config-section" class="setup-form" style="display: none;">
+      <h3 style="margin-top: 0; display: flex; align-items: center;">
+        <i class="bi bi-arrow-left" style="cursor: pointer; margin-right: 10px;" id="back-to-setup"></i>
+        n8n Configuration
+      </h3>
+      
+      <div id="config-error-message" class="error" style="display: none;"></div>
+      <div id="config-success-message" class="success" style="display: none;"></div>
+      <div id="config-loading" class="loading" style="display: none;">
+        <span style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 10px;"></span>
+        Testing connection...
+      </div>
+
+      <form id="config-form">
+        <div class="form-group">
+          <label for="api-url">n8n API URL:</label>
+          <input type="text" id="api-url" placeholder="https://your-n8n-instance.com" required />
+          <div style="font-size: 12px; color: #888; margin-top: 5px;">Example: https://n8n.example.com</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="api-key">n8n API Key:</label>
+          <input type="password" id="api-key" placeholder="Enter your API key" required />
+          <div style="font-size: 12px; color: #888; margin-top: 5px;">Find this in your n8n settings</div>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <label style="margin-bottom: 2px;"><i class="bi bi-moon"></i> Dark Mode</label>
+              <div style="font-size: 12px; color: #888;">Switch between light and dark theme</div>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="dark-mode-toggle">
+            </div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="btn" id="save-config">
+            <i class="bi bi-check-circle"></i> Save & Test
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="main-section" style="display: none;">
+      <div class="button-group">
+        <button class="refresh-btn" id="refresh-workflows">🔄 Refresh</button>
+        <button class="refresh-btn" id="open-settings"><img src="icon.png" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;">Settings</button>
+      </div>
+      
+      <div id="loading" class="loading" style="display: none;">
+        Loading workflows...
+      </div>
+
+      <div id="error-message" class="error" style="display: none;"></div>
+      
+      <div id="workflows-container" class="workflows-container"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
