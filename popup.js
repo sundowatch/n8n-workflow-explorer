@@ -619,7 +619,7 @@ class N8nWorkflowManager {
     // Click to open workflow
     workflowDiv.addEventListener('click', () => {
       const workflowUrl = `${this.apiUrl}/workflow/${workflow.id}`;
-      chrome.tabs.create({ url: workflowUrl });
+      window.open(workflowUrl, '_blank');
     });
 
     return workflowDiv;

@@ -24,7 +24,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // Handle messages from popup if needed
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'openWorkflow') {
-    chrome.tabs.create({ url: request.url });
+    // Tab opening is now handled directly in popup with window.open()
     sendResponse({ success: true });
   }
 });

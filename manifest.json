@@ -6,8 +6,7 @@
   "author": "Ibrahim Sanduvaç",
   "homepage_url": "https://github.com/sundowatch/n8n-workflow-explorer",
   "permissions": [
-    "storage",
-    "tabs"
+    "storage"
   ],
   "host_permissions": [
     "*://*/*"
